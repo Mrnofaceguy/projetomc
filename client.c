@@ -1,11 +1,12 @@
 #include <stdio.h>
 void main(){
-  menuderegisto();
+  menu();
   int x;
   scanf("%d", &x);
   switch (x){
   case 1:login();
-  case 2:registo();
+        break;
+  case 2:
   case 3: exit;
   default:
   }
@@ -18,7 +19,7 @@ int login(){
   printf("Escreva o seu nome de utilizador:");
   scanf("%c",&nome[]);
   printf("Escreva a sua password");
-  scanf
+  scanf(""
 }
   int menuderegisto()
 {
