@@ -5,7 +5,7 @@ void main(){
   scanf("%d", &x);
   switch (x){
   case 1:login();
-  case 2:
+  case 2:registo();
   case 3: exit;
   default:
   }
