@@ -1,5 +1,29 @@
 #include <stdio.h>
-int menuderegisto()
+
+
+  printf("2) Menu de registo");
+  printf("3) Sair");
+  nenu();
+  int x;
+  scanf("%d", &x);
+  switch (x){
+  case 1:login();
+  case 2:
+  case 3: exit;
+  default:
+  }
+}
+int verification(str[],str[]){
+}
+int login(){
+  char nome[];
+  char passw[];
+  printf("Escreva o seu nome de utilizador:");
+  scanf("%c",&nome[]);
+  printf("Escreva a sua password");
+  scanf
+}
+  int menuderegisto()
 {
   printf("**Menu de registo**");
   printf("1) Login /Autenticação  ");
@@ -19,3 +43,4 @@ int menu()
   printf("7) Ver Estatísticas");
   printf("8) Logout");
 }  
+
