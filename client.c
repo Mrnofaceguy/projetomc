@@ -1,9 +1,6 @@
 #include <stdio.h>
-
-
-  printf("2) Menu de registo");
-  printf("3) Sair");
-  nenu();
+void main(){
+  menu();
   int x;
   scanf("%d", &x);
   switch (x){
