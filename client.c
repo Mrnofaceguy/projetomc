@@ -19,7 +19,9 @@ int login(){
   printf("Escreva o seu nome de utilizador:");
   scanf("%c",&nome[]);
   printf("Escreva a sua password");
-  scanf(""
+  scanf("%c", &passw);
+  
+  
 }
   int menuderegisto()
 {
