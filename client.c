@@ -1,6 +1,6 @@
 #include <stdio.h>
 void main(){
-  menu();
+  menuderegisto();
   int x;
   scanf("%d", &x);
   switch (x){
