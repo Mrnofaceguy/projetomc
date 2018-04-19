@@ -1,13 +1,11 @@
 #include <stdio.h>
-
-
-  printf("2) Menu de registo");
-  printf("3) Sair");
-  nenu();
+void main(){
+  menu();
   int x;
   scanf("%d", &x);
   switch (x){
   case 1:login();
+        break;
   case 2:
   case 3: exit;
   default:
@@ -21,7 +19,9 @@ int login(){
   printf("Escreva o seu nome de utilizador:");
   scanf("%c",&nome[]);
   printf("Escreva a sua password");
-  scanf
+  scanf("%c", &passw);
+  
+  
 }
   int menuderegisto()
 {
