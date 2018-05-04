@@ -3,7 +3,9 @@
 #include<ctype.h>
 #include<stdlib.h>
 
-
+void menu_de_registo();
+void Pedido_de_registo();
+void Login();
 
 void
 menu_de_registo()
@@ -12,6 +14,20 @@ menu_de_registo()
         printf("1) Login / antenticação\n");
         printf("2) Pedido de registo\n");
         printf("0) Sair\n");
+        int input = 0;
+        scanf("%d", &input);
+        switch (input)
+        {
+                case 1:
+                        Login();
+                case 2:
+                        Pedido_de_registo();
+                case 0:
+                        return ;
+                default:
+                        printf("A opção escolhida nao existe.Tente outra vez\n");
+                        menu_de_registo();
+        }
 }
 
 
@@ -40,9 +56,37 @@ Menu()
                         main();
         }
 }
+*/
+void
+Pedido_de_registo()
+{
+        char newusername[20];
+        char newpasswd[20];
+        char continuar = 0;
+        printf("Insira um username (menos de vinte caracteres)\n"); scanf("%s", newusername);
+        printf("Insira uma password (menos de vinte caracteres)\n"); scanf("%s\n", newpasswd);
+        FILE *fp;
+        fp = fopen("/net/areas/homes/up201704695/Documents/project_lab/Pedido_de_registo.txt","a");
+        if(!fp)
+                printf ("Erro na abertura do arquivo.");
+        fprintf(fp, "%s;%s; \n", newusername, newpasswd);
+        fclose(fp);
+        printf("O seu pedido está a ser processado\n");
 
+        printf("Se desejar ir para o menu de registo escolha a opção 1)\n Se desejar sair escolha outra opção qualquer\n");
+        fflush(stdout);
 
-int
+        scanf("%c\n", &continuar);
+        if(continuar == '1')
+        {
+                menu_de_registo();
+
+        }
+        return ;
+
+}
+
+void
 Login()
 {
         char username[20];
@@ -77,7 +121,7 @@ Login()
                         if (temp1[i] != username[i])
                         {
                                 printf("Nome ou password incorretos. Deseja tentar outra vez?(y/n) ");
-                                char continuar = 0;
+                                char continuar ;
                                 scanf("%c", &continuar);
 
                                 if(continuar == 'y')
@@ -111,48 +155,6 @@ Login()
 int
 main()
 {
-        int input = 0;
         menu_de_registo();
-        scanf("%d", &input);
-        switch (input)
-        {
-                case 1:
-                        Login();
-                case 2:
-                        Pedido_de_registo();
-                case 0:
-                        return 0;
-                default:
-                        printf("A opção escolhida nao existe.Tente outra vez\n");
-                        main();
-        }
-}
-
-int
-Pedido_de_registo()
-{
-        char newusername[20];
-        char newpasswd[20];
-        char continuar = 0;
-        printf("Insira um username (menos de vinte caracteres)\n"); scanf("%s", newusername);
-        printf("Insira uma password (menos de vinte caracteres)\n"); scanf("%s\n", newpasswd);
-        FILE *fp;
-        fp = fopen("/net/areas/homes/up201704695/Documents/project_lab/Pedido_de_registo.txt","a");
-        if(!fp)
-                printf ("Erro na abertura do arquivo.");
-        fprintf(fp, "%s;%s;", newusername, newpasswd);
-        fclose(fp);
-        printf("O seu pedido está a ser processado\n");
-
-        printf("Se desejar ir para o menu de registo escolha a opção 1)\n Se desejar sair escolha outra opção qualquer\n");
-        fflush(stdout);
-
-        scanf("%c\n", &continuar);
-        if(continuar == '1')
-        {
-                main();
-
-        }
-        return 0;
 
 }
