@@ -1,15 +1,19 @@
-#include <stdio.h>
+#include<stdio.h>
 #include<string.h>
 #include<ctype.h>
 #include<stdlib.h>
+#include<unistd.h>
 #include<dos.h>
 #define FX "SupServidor_assets/info_util.txt"
 #define PR "Highway/Pedido_de_registo.txt"
-typedef struct{
-	char nome[20];
-	char passwd[20];
+typedef user{
+	char username[30];
+	char password[30];
+        char email[100];
+        char nome[30];
+	int tipo;
 
-} user;
+}
 user database_init(){
   user database[1000];
   FILE *fx; char s[22],n=0,i,j;
@@ -36,10 +40,10 @@ void menu_de_registo()
 
 }
 int Login(user database[]){
-        char username[20];
-        char passwd[20];
-        char temp1[20];
-        char temp2[20];
+        char username[30];
+        char passwd[30];
+        char temp1[30];
+        char temp2[30];
         char x;
         int u=1;
         int p=1;
@@ -114,12 +118,12 @@ void grava(user database[], int n)
  {
 	 pr=fopen(PR,"r");
 	 fx=fopen(FX,"r+")
-	 char s[40];
+	 char s[60];
 	 for(,,)
 	 {
 
-		 if (fgets(s,40,pr)) {
-		 	for(,fgets(s,40,pr),)
+		 if (fgets(s,60,pr)) {
+		 	for(,fgets(s,60,pr),)
 			{fprintf("%c" s[]);
 			}
 		 }
