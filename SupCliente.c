@@ -458,7 +458,7 @@ Alterar_password(conta utilizador[], int n)
 		       		temp4[l++] = s[i];
 			temp4[l++] = '\0';
 			++i;
-			fprintf(fp3, "%s;%s;%s;%s;\n", utilizador[n].username, utilizador[n].password, utilizador[n].nome, utilizador[n].email);
+			fprintf(fp3, "%s;%s;%s;%s;\n", temp1, temp2, temp3, temp4);
 		}
 		fclose (fp3); fclose (fp4);
 		menu_de_registo();
@@ -468,31 +468,48 @@ Alterar_password(conta utilizador[], int n)
 }
 
 void
-Subscrever_topicos(topicos topico[], n)
+Subscrever_topicos(Topicos topico[],conta utilizador[],int n, int p)
 {
 	char s[300];
+	char input;
 	FILE *fp = fopen("C:\\Users\\utilizador\\Desktop\\project_lab\\Topicos.txt","r");
 	if(!fp)
         {
                 printf ("Erro na abertura do arquivo.");
                 printf ("try again\n");
-                Alterar_nome (utilizador, n);
+                Subscrever_topicos(topico,p);
 	}
 
 	while (fgets(s,300,fp))
 	{
 		int i = 0;
-		topicos[n].num_topico = s[i++];
+		topico[p].num_topico = s[i++];
 		i++;
 		int j = 0;
+
                 for (; s[i] != ';'; ++i)
-			topicos[n].topico[j++] = s[i];
-		topicos[n].topico[j++] = '\0';
+			topico[p].topico[j++] = s[i];
+
+		topico[p].topico[j++] = '\0';
 		i++;
-		topicos[n].likes = s[i];
-		printf("%d - %s. %d likes"topicos[n].num_topico, topicos[n].topico, topicos[n].likes);
+		topico[p].likes = s[i];
+
+		printf("%d - %s. %d likes", topico[p].num_topico, topico[p].topico, topico[p].likes);
+		printf("Deseja subscrever este tópico?(y/n)\n");
+		scanf("%d", &input);
+		if(input == 'y')
+		{
+			adicionar_topico(topico[p].num_topico,utilizador,n,p);
+			Menu;
+		}
+
 	}
 
+
+}
+
+adicionar_topico(Topicos topico[], conta utilizador[], int n, int p)
+{
 
 }
 
@@ -538,6 +555,7 @@ Menu()
                         printf("A opção escolhida nao existe.Tente outra vez\n");
                         Menu();
         }*/
+
 }
 
 void
@@ -576,7 +594,7 @@ Pedido_de_registo()
 	}
 
         FILE *fp;
-        fp = fopen("C:\\Users\\utilizador\\Desktop\\project_lab\\Pedido_de_registo.txt","a");
+        fp = fopen("Pedido_de_registo.txt","a");
         if(!fp)
                 printf ("Erro na abertura do arquivo.");
 
@@ -598,7 +616,7 @@ Login(conta utilizador[], int n)
         char temp2[20];
         char s[50];
 
-        FILE *fp = fopen("C:\\Users\\utilizador\\Desktop\\project_lab\\SupCliente_assets\\Dados_Login.txt","r");
+        FILE *fp = fopen("SupCliente_assets\\Dados_Login.txt","r");
 
         if(!fp)
         {
@@ -656,7 +674,7 @@ Login(conta utilizador[], int n)
         }
 
         fclose(fp);
-        printf("nice.");
+        Menu();
 
         return ;
 }
