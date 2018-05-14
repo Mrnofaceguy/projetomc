@@ -6,11 +6,12 @@
 #include<dos.h>
 #define FX "SupServidor_assets/info_util.txt"
 #define PR "Highway/Pedido_de_registo.txt"
+#define Hell "highway/banlist.txt"
 typedef user{
 	char username[30];
 	char password[30];
-        char email[100];
-        char nome[30];
+ char email[100];
+ char nome[30];
 	int tipo;
 
 }
@@ -19,8 +20,8 @@ user database_init(){
   FILE *fx; char s[22],n=0,i,j;
 	fx=fopen(FX,"r");
 	while(fgets(s,22,fx)){
-		for(i=0;s[i]!=';';i++) database[n].nome[i]=s[i];
-		database[n].nome[i]=';';
+		for(i=0;s[i]!=';';i++) database[n].nome=s[i];
+		database[n].nome=';';
 		i++;
 		j=0;
 		for(;s[i]!=';';i++) database[n].passwd[j++]=s[i];
@@ -31,6 +32,26 @@ user database_init(){
 	}
 	fclose(fx);
   return database;
+}
+user new(char name[30],char pass[30], char email[100], char rname[30] ){
+ user new;
+		for (int i = 0, name[i],++i){new.username[i]=name[i];}
+		for (i= 0, pass[i],++i){new.passwd[i]=pass[i];}
+		for (i = 0, email[i],++i){new.email[i]=email[i];}
+		for (i = 0, rname[i],++i){new.nome[i]=rname[i];}
+  return new;
+}
+user banlist_init(){
+  user banlist[1000];
+  FILE *fx; char s[30],n=0,i,j;
+	fx=fopen(Hell,"r");
+	while(fgets(s,22,fx)){
+		for(i=0;s[i]!=';';i++) banlist[n].nome=s[i];
+		banlist[n].nome=';';
+		
+	}
+	fclose(fx);
+  return banlist;
 }
 void menu_de_registo()
 {
@@ -104,11 +125,31 @@ int main()
     case default: printf("Erro no input, tente outra vez\n", ); Main();
       }
 }
-void grava(user database[], int n)
+int isbanned(user u)
+
+{
+		user banlist=banlist_init();
+		
+		for (int i=0,banlist[i],++i)
+		{
+				if (u.username==banlist[i].username)
+									return 1;
+			}
+			return 0;
+}
+void grava(int l, user database[], int n)
 {
   int i;
-  FILE *fx;
-  fx=fopen(FX,"r+");
+  if (l==0)
+  {
+  							FILE *fx;
+  							fx=fopen(Hell,"r+");
+  	}
+  	else if (l==1)
+  	{
+  							FILE *fx;
+  							fx=fopen(FX,"r+");
+  	}
   for(i=0;i<n;i++)
     fprintf(fx,"%s;%s\n",database[i].nome,
     database[i].passwd;
@@ -117,16 +158,26 @@ void grava(user database[], int n)
  void freshmeat()
  {
 	 pr=fopen(PR,"r");
-	 fx=fopen(FX,"r+")
-	 char s[60];
+	 fx=fopen(FX,"r+");
+	 hl=fopen(Hell, "r+");
+	 user s;
 	 for(,,)
 	 {
 
 		 if (fgets(s,60,pr)) {
 		 	for(,fgets(s,60,pr),)
-			{fprintf("%c" s[]);
+			{if (isbanned(fprintf("%c" s[]);
 			}
 		 }
 		 sleep(60);
 	 }
  }
+       {
+                        printf ("Dados de login aceites/n");
+                        // Menu ();
+                        return 0;
+
+                }
+        }
+        printf("Dados de login errados/n");
+        printf
