@@ -7,17 +7,25 @@
 #define FX "SupServidor_assets/info_util.txt"
 #define PR "Highway/Pedido_de_registo.txt"
 #define Hell "highway/banlist.txt"
-typedef user{
+typedef user
+{
 	char username[30];
 	char password[30];
- char email[100];
- char nome[30];
+	char email[100];
+	char nome[30];
 	int tipo;
-
+}
+int compare(char a[], char b[])
+{
+	int c=1;
+	for (int i=0, a[i]&&b[i], i++)
+		if (a[i]!=b[i])
+			return -1;
+	return 1;
 }
 user database_init(){
   user database[1000];
-  FILE *fx; char s[22],n=0,i,j;
+  FILE *fx; char s[1],n=0,i,j;
 	fx=fopen(FX,"r");
 	while(fgets(s,22,fx)){
 		for(i=0;s[i]!=';';i++) database[n].nome=s[i];
@@ -33,15 +41,28 @@ user database_init(){
 	fclose(fx);
   return database;
 }
-user new(char name[30],char pass[30], char email[100], char rname[30] ){
- user new;
-		for (int i = 0, name[i],++i){new.username[i]=name[i];}
-		for (i= 0, pass[i],++i){new.passwd[i]=pass[i];}
-		for (i = 0, email[i],++i){new.email[i]=email[i];}
-		for (i = 0, rname[i],++i){new.nome[i]=rname[i];}
-  return new;
+int user_exists(user u)
+{
+	user database=database_init();
+	for (int i = 0, i<1000, ++i)
+	{
+		if (compare(database[i].username, u.username)==1 || compare(database[i].nome, u.nome)==1 || compare(database[i].email, u.email)==1)
+			return 1;
+	}
+	return -1;
 }
-user banlist_init(){
+user new(char name[30],char pass[30], char email[100], char rname[30], int type)
+{
+	user new;
+	for (int i = 0, name[i],++i){new.username[i]=name[i];}
+	for (i= 0, pass[i],++i){new.passwd[i]=pass[i];}
+	for (i = 0, email[i],++i){new.email[i]=email[i];}
+	for (i = 0, rname[i],++i){new.nome[i]=rname[i];}
+	new.tipo=type
+	return new;
+}
+user banlist_init()
+{
   user banlist[1000];
   FILE *fx; char s[30],n=0,i,j;
 	fx=fopen(Hell,"r");
@@ -128,30 +149,30 @@ int main()
 int isbanned(user u)
 
 {
-		user banlist=banlist_init();
+	user banlist=banlist_init();
 		
-		for (int i=0,banlist[i],++i)
-		{
-				if (u.username==banlist[i].username)
-									return 1;
-			}
-			return 0;
+	for (int i=0,banlist[i],++i)
+	{
+		if (u.username==banlist[i].username)
+			return 1;
+	}
+	return -1;
 }
-void grava(int l, user database[], int n)
+void grava(int l, user database, int n)
 {
   int i;
   if (l==0)
   {
-  							FILE *fx;
-  							fx=fopen(Hell,"r+");
-  	}
+  	FILE *fx;
+  	fx=fopen(Hell,"r+");
+  }
   	else if (l==1)
-  	{
-  							FILE *fx;
-  							fx=fopen(FX,"r+");
-  	}
+  {
+  	FILE *fx;
+  	fx=fopen(FX,"r+");
+  }
   for(i=0;i<n;i++)
-    fprintf(fx,"%s;%s\n",database[i].nome,
+    fprintf(fx,"%s;%s;%s;%s;%d\n",database[i].nome,
     database[i].passwd;
     fclose(fx);
 }
@@ -160,24 +181,43 @@ void grava(int l, user database[], int n)
 	 pr=fopen(PR,"r");
 	 fx=fopen(FX,"r+");
 	 hl=fopen(Hell, "r+");
-	 user s;
+	 user s[];
 	 for(,,)
 	 {
-
-		 if (fgets(s,60,pr)) {
-		 	for(,fgets(s,60,pr),)
-			{if (isbanned(fprintf("%c" s[]);
+		
+		 if (fgets(s,200,pr)) {
+		 	for(,fgets(s,200,pr),)
+			{
+				fgets(s,200,pr);
+				char tempu[30];
+				char tempp[30];
+				char tempe[100];
+				char tempn[30];
+				int tempt;
+				for (int i=0, s[i] != ';',++i)
+				{
+					tempu[i]=s[i];	
+				}
+				for ( i=0, s[i] != ';',++i)
+				{
+					tempp[i]=s[i];	
+				}	
+				for (=0, s[i] != ';',++i)
+				{
+					tempe[i]=s[i];	
+				}	
+				for (i=0, s[i] != ';',++i)
+				{
+					tempn[i]=s[i];	
+				}	
+				tempt=s[i];
+				u=new(tempu, tempp, tempe, tempn, tempt);
+				if (isbanned(u)==-1&&user_eists(u)==-1)
+					
+				fprintf("%c" s[]);
 			}
 		 }
 		 sleep(60);
 	 }
  }
-       {
-                        printf ("Dados de login aceites/n");
-                        // Menu ();
-                        return 0;
-
-                }
-        }
-        printf("Dados de login errados/n");
-        printf
+       
