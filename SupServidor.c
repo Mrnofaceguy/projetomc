@@ -32,8 +32,8 @@ user database_init(){
 		database[n].nome=';';
 		i++;
 		j=0;
-		for(;s[i]!=';';i++) database[n].passwd[j++]=s[i];
-		database[n].passwd[j]=';';
+		for(;s[i]!=';';i++) database[n].password[j++]=s[i];
+		database[n].password[j]=';';
 		i++;
 		j=0;
 		n++;
@@ -55,7 +55,7 @@ user new(char name[30],char pass[30], char email[100], char rname[30], int type)
 {
 	user new;
 	for (int i = 0, name[i],++i){new.username[i]=name[i];}
-	for (i= 0, pass[i],++i){new.passwd[i]=pass[i];}
+	for (i= 0, pass[i],++i){new.password[i]=pass[i];}
 	for (i = 0, email[i],++i){new.email[i]=email[i];}
 	for (i = 0, rname[i],++i){new.nome[i]=rname[i];}
 	new.tipo=type
@@ -106,9 +106,9 @@ int Login(user database[]){
                         }
                 }
 
-                for (int t = 0; temp2[t] != '\0' || database[t].passwd != '\0';++t)
+                for (int t = 0; temp2[t] != '\0' || database[t].password != '\0';++t)
                 {
-                        if (temp2[t] != database[t].passwd)
+                        if (temp2[t] != database[t].password)
                         {
                                 p=0;
                                 break;
@@ -158,24 +158,26 @@ int isbanned(user u)
 	}
 	return -1;
 }
-void grava(int l, user database, int n)
+void grava(int l, user u, int n)
 {
   int i;
-  if (l==0)
+  if (l==2)
   {
   	FILE *fx;
   	fx=fopen(Hell,"r+");
+    	fprintf(fx,"%s;%s;%s\n",u.username,
+    	u.email, u.nome)	
+  }
   }
   	else if (l==1)
   {
   	FILE *fx;
   	fx=fopen(FX,"r+");
+    	fprintf(fx,"%s;%s;%s;%s%d\n", u.username, u.passwd, u.email, u.nome, u.tipo)		
+		
   }
-  for(i=0;i<n;i++)
-    fprintf(fx,"%s;%s;%s;%s;%d\n",database[i].nome,
-    database[i].passwd;
     fclose(fx);
-}
+
  void freshmeat()
  {
 	 pr=fopen(PR,"r");
