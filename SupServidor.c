@@ -133,9 +133,23 @@ int Login(user database[]){
 
 
 }
+void userlistprompt()
+{
+	printf("O que deseja fazer?");
+	printf("1) Re-imprimir a lista/n 2) ")
+		
+void userlist(){
+	database[]=database_init();
+	printf("Username, email, nome, tipo");
+	for (int i = 0, database[i],++i)
+	{
+		printf("%s, %s, %s, %d/n" database[i].username, database[i].email, database[i].nome, database[i].tipo);
+	}
+	userlistprompt();
+
 int main()
 {
-  user database[1000] = database_init();
+  
   menu_de_registo();
   int input;
   scanf("%d", &input);
@@ -158,26 +172,26 @@ int isbanned(user u)
 	}
 	return -1;
 }
-void grava(int l, user u, int n)
+void grava(int l, user u)
 {
-  int i;
+ 
   if (l==2)
   {
-  	FILE *fx;
-  	fx=fopen(Hell,"r+");
-    	fprintf(fx,"%s;%s;%s\n",u.username,
+  	FILE *hl;
+  	hl=fopen(Hell,"r+");
+    	fprintf(hl,"%s;%s;%s\n",u.username,
     	u.email, u.nome)	
   }
-  }
-  	else if (l==1)
+  
+  else if (l==1)
   {
   	FILE *fx;
   	fx=fopen(FX,"r+");
     	fprintf(fx,"%s;%s;%s;%s%d\n", u.username, u.passwd, u.email, u.nome, u.tipo)		
 		
-  }
-    fclose(fx);
-
+   }
+   fclose(fx);
+}
  void freshmeat()
  {
 	 pr=fopen(PR,"r");
@@ -215,8 +229,8 @@ void grava(int l, user u, int n)
 				tempt=s[i];
 				u=new(tempu, tempp, tempe, tempn, tempt);
 				if (isbanned(u)==-1&&user_eists(u)==-1)
-					
-				fprintf("%c" s[]);
+					grava(1,u);
+				
 			}
 		 }
 		 sleep(60);
