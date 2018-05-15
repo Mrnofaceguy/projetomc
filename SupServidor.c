@@ -167,7 +167,7 @@ int isbanned(user u)
 }
 int BanHammer()
 { 
- user m;
+	user m;
 	printf("Qual o utilizador a banir?/n Nome de utilizador:");
 	scanf("%c", &m.username);
 	printf("/n Email:");
@@ -175,26 +175,27 @@ int BanHammer()
 	printf("/n Nome:"):
 	scanf("%c", &m.nome);
 	if (isbanned(m)==-1)
-	{
-					grava(2, m);
-					return;
+	{	
+		grava(2, m);
+		return;
 	}
 	else if(isbanned(m)==1) 
 	{
-	  printf("O utilizador já se encontra banido, quer continuar? (y/n)");
-	  char yn;
-	  scanf("%c", yn);
-	  if(yn=="y")
-	  				BanHammer();
-	  else return;
-	  }
+		printf("O utilizador já se encontra banido, quer continuar? (y/n)");
+		char yn;
+		scanf("%c", yn);
+		if(yn=="y")
+			BanHammer();
+		else return;
+	}
 }				
 void userlistprompt()
 {
-	printf("O que deseja fazer?");
-	printf("1) Re-imprimir a lista/n 2) Banir utilizador/n 3) Voltar")
-		
-void userlist(){
+	printf("O que deseja fazer? /n 1) Re-imprimir a lista/n 2) Banir utilizador/n 3) Voltar/n");
+	
+}
+void userlist()
+{
 	database[]=database_init();
 	printf("Username, email, nome, tipo");
 	for (int i = 0, database[i],++i)
@@ -206,10 +207,10 @@ void userlist(){
 	scanf("%d", &input);
 	switch (input)
 	{
-							case 1: userlist(); break;
-							case 2: BanHAmmer();break;
-							case 3: return;break;
-							case default: userlist(); break;
+		case 1: userlist(); break;
+		case 2: BanHAmmer();break;
+		case 3: return;break;
+		case default: userlist(); break;
 	}
 	return						
 }
