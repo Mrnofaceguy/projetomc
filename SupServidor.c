@@ -158,62 +158,9 @@ void menu_de_registo()
 }
 void menu_prompt()
 {
-	printf("O que deseja fazer?/n 1) 
-void menu()
-{
-	printf("
-int Login(user database[]){
-        char username[30];
-        char passwd[30];
-        char temp1[30];
-        char temp2[30];
-        char x;
-        int u=1;
-        int p=1;
-
-        FILE *fp;
-        fp = fopen(FX,"r");
-        printf("Insira o username \n"); scanf("%s", username);
-        printf("Insira a password \n"); scanf("%s",passwd);
-        for (int i=0; i < 50; ++i)
-        {
-
-                for (int t = 0; temp1[t] != '\0' || database[t].nome != '\0';++t)
-                {
-                        if (temp1[t] != database[t].nome)
-                        {
-                                u= 0;
-                                break;
-                        }
-                }
-
-                for (int t = 0; temp2[t] != '\0' || database[t].password != '\0';++t)
-                {
-                        if (temp2[t] != database[t].password)
-                        {
-                                p=0;
-                                break;
-                        }
-                }
-                if (u + p == 2)
-                {
-                        printf ("Dados de login aceites/n");
-                        // Menu ();
-                        return 0;
-
-                }
-        }
-        printf("Dados de login errados/n");
-        printf("Quer tentar outra vez(y/n)?"); scanf("%c",&x);
-
-        if (x=='y')
-        {
-                Login();
-        }
-        else {menu_de_registo ();}
+	printf("O que deseja fazer?/n 1) Listar os ulilizadores existentes,/n 2) 
 
 
-}
 int isbanned(user u)
 
 {
@@ -273,7 +220,63 @@ void userlist()
 		case 3: return;break;
 		case default: userlist(); break;
 	}
-	return						
+	return;					
+}
+void menu()
+{
+	printf("");
+}
+int Login(user database[]){
+        char username[30];
+        char passwd[30];
+        char temp1[30];
+        char temp2[30];
+        char x;
+        int u=1;
+        int p=1;
+
+        FILE *fp;
+        fp = fopen(FX,"r");
+        printf("Insira o username \n"); scanf("%s", username);
+        printf("Insira a password \n"); scanf("%s",passwd);
+        for (int i=0; i < 50; ++i)
+        {
+
+                for (int t = 0; temp1[t] != '\0' || database[t].nome != '\0';++t)
+                {
+                        if (temp1[t] != database[t].nome)
+                        {
+                                u= 0;
+                                break;
+                        }
+                }
+
+                for (int t = 0; temp2[t] != '\0' || database[t].password != '\0';++t)
+                {
+                        if (temp2[t] != database[t].password)
+                        {
+                                p=0;
+                                break;
+                        }
+                }
+                if (u + p == 2)
+                {
+                        printf ("Dados de login aceites/n");
+                        Menu();
+                        return 0;
+
+                }
+        }
+        printf("Dados de login errados/n");
+        printf("Quer tentar outra vez(y/n)?"); scanf("%c",&x);
+
+        if (x=='y')
+        {
+                Login();
+        }
+        else {menu_de_registo ();}
+
+
 }
 int smain()
 {
@@ -285,12 +288,12 @@ int smain()
   {
     case 1:  Login ();break;
     case 0: return 0;
-    case default: printf("Erro no input, tente outra vez\n", ); Main();
+    case default: printf("Erro no input, tente outra vez\n", ); smain();
   }
 }	       
 int main()
 {
-  
+  freshmeat();
   menu_de_registo();
   int input;
   scanf("%d", &input);
