@@ -17,10 +17,12 @@ conta utilizador[200];
 
 typedef struct
 {
-	char num_topico;
+	char num_topico[10];
 	char topico[150];
-	char likes;
+	char likes[150];
 }Topicos;
+
+Topicos topico[200];
 
 void clear();
 void menu_de_registo();
@@ -63,7 +65,7 @@ menu_de_registo()
                         break;
                 case 2:
                         Pedido_de_registo();
-        
+
                 case 0:
                         return ;
                         break;
@@ -87,13 +89,13 @@ Gerir_conta(int n)
 	switch (input)
         {
                 case 1:
-                        Alterar_nome( utilizador, n);
+                        Alterar_nome(0);
                         break;
                 case 2:
-                        Alterar_username( utilizador, n);
+                        Alterar_username(0);
 						break;
 				case 3:
-						Alterar_password( utilizador, n);
+						Alterar_password(0);
 						break;
                 case 0:
                         Menu();
@@ -105,7 +107,7 @@ Gerir_conta(int n)
 	return ;
 }
 void
-Alterar_nome(conta utilizador[], int n)
+Alterar_nome(int n)
 {
 	int tentativas = 0;
 	char tempnome[30];
@@ -123,22 +125,22 @@ Alterar_nome(conta utilizador[], int n)
         {
                 printf ("E1rro na abertura do arquivo.");
                 printf ("try again\n");
-                Alterar_nome (utilizador, n);
+                Alterar_nome (n);
         }
 	if(!fp1)
         {
                 printf ("E2rro na abertura do arquivo.");
                 printf ("try again\n");
-                Alterar_nome (utilizador, n);
+                Alterar_nome (n);
         }
 	printf("Insira nome atual.(vai voltar ao menu de registo no fim da alteração)\n"); scanf("%s",temp1);
-	
+
 	if ( !(strcmp (utilizador[n].nome, temp1) == 0))
 		{
 			printf("Nome errado.Tente outra vez\n");
-			Alterar_nome(utilizador, n);
+			Alterar_nome(n);
 		}
-	
+
 	while(tentativas < 3 && p != 'b' )
 	{
 		printf("Insira nome novo.\n"); scanf("%s",tempnome);
@@ -225,26 +227,25 @@ Alterar_nome(conta utilizador[], int n)
 	 		       		temp4[l++] = s[i];
 	 			temp4[l++] = '\0';
 	 			++i;
-	 			
+
 	 			int m = 0;
 				for (; s[i] != ';'; ++i)
 			       		temp5[m++] = s[i];
 				temp5[m++] = '\0';
 				++i;
-	 			
+
 	 			fprintf(fp3, "%s;%s;%s;%s;%s;\n", temp1,temp2, temp3, temp4, temp5);
 	 		}
 	 		fclose (fp3); fclose (fp4);
 	 		menu_de_registo();
 	 	}
-	 	fclose (fp3); fclose (fp4);
-	 		menu_de_registo();
+
 	 	else
 	 		Gerir_conta(0);
 
 }
 void
-Alterar_username(conta utilizador[], int n)
+Alterar_username(int n)
 {
 	int tentativas = 0;
 	char tempnome[30];
@@ -254,34 +255,33 @@ Alterar_username(conta utilizador[], int n)
 	char temp4[100];
 	char temp5[300];
 	char s[300];
-	FILE *fp = fopen("Dados_Login.txt","r");
-	FILE *fp1 = fopen("Dados_Login_temporario.txt","w");
+	char p = 'a';
+	FILE *fp = fopen("./SupCliente_assets/Dados_Login.txt","r");
+	FILE *fp1 = fopen("./SupCliente_assets/Dados_Login_temporario.txt","w");
 
         if(!fp)
         {
                 printf ("Erro na abertura do arquivo.");
                 printf ("try again\n");
-                Alterar_nome (utilizador, n);
+                Alterar_username (n);
         }
 	if(!fp1)
         {
                 printf ("Erro na abertura do arquivo.");
                 printf ("try again\n");
-                Alterar_nome (utilizador, n);
+                Alterar_username (n);
         }
-	printf("Insira username atual.\n"); scanf("%s\n",temp1);
-	for(int i = 0; i < 30; i++)
+	printf("Insira username atual.\n"); scanf("%s",temp1);
+	if ( !(strcmp (utilizador[n].username, temp1) == 0))
 	{
-		if(utilizador[n].username[i] != temp1[i])
-		{
-			printf("Nome errado.Tente outra vez\n");
-			Alterar_nome(utilizador, n);
-		}
+		printf("usernameome errado.Tente outra vez\n");
+		Alterar_username(n);
 	}
+
 	printf("Tem tres tentativas.\n");
-	while(tentativas < 3 )
+	while(tentativas < 3 && p != 'b' )
 	{
-		printf("Insira username novo.\n"); scanf("%s\n",tempnome);
+		printf("Insira username novo.\n"); scanf("%s",tempnome);
 		if(strlen(tempnome) >= 20)
 		{
 			printf("Tenta outra vez.\n");
@@ -326,16 +326,17 @@ Alterar_username(conta utilizador[], int n)
 				if(strcmp (temp1, utilizador[n].username) == 0 && strcmp (temp2, utilizador[n].password) == 0)
 					fprintf(fp1, "%s;%s;%s;%s;%s;\n", tempnome, temp2, temp3, temp4, temp5);
 				else
-					fprintf(fp1, "%s;%s;%s;%s;%s\n", temp1,temp2, temp3, temp4, temp5);
+					fprintf(fp1, "%s;%s;%s;%s;%s;\n", temp1,temp2, temp3, temp4, temp5);
 		       }
+		       p = 'b';
 		 }
 	}
 	if(tentativas < 3)
 	{
 		fclose (fp); fclose (fp1);
 
-		FILE *fp3 = fopen("Dados_Login.txt","w");
-		FILE *fp4 = fopen("Dados_Login_temporario.txt","r");
+		FILE *fp3 = fopen("./SupCliente_assets/Dados_Login.txt","w");
+		FILE *fp4 = fopen("./SupCliente_assets/Dados_Login_temporario.txt","r");
 
 		while (fgets(s,300,fp4))
 		{
@@ -364,7 +365,7 @@ Alterar_username(conta utilizador[], int n)
 		       		temp4[l++] = s[i];
 			temp4[l++] = '\0';
 			++i;
-			fprintf(fp3, "%s;%s;%s;%s;\n", temp1,temp2, temp3, temp4, temp5);
+			fprintf(fp3, "%s;%s;%s;%s;%s;\n", temp1,temp2, temp3, temp4, temp5);
 		}
 		fclose (fp3); fclose (fp4);
 		menu_de_registo();
@@ -374,7 +375,7 @@ Alterar_username(conta utilizador[], int n)
 	return;
 }
 void
-Alterar_password(conta utilizador[], int n)
+Alterar_password(int n)
 {
 	int tentativas = 0;
 	char tempnome[30];
@@ -384,34 +385,33 @@ Alterar_password(conta utilizador[], int n)
 	char temp4[100];
 	char temp5[300];
 	char s[300];
-	FILE *fp = fopen("Dados_Login.txt","r");
-	FILE *fp1 = fopen("Dados_Login_temporario.txt","w");
+	char p = 'a';
+	FILE *fp = fopen("./SupCliente_assets/Dados_Login.txt","r");
+	FILE *fp1 = fopen("./SupCliente_assets/Dados_Login_temporario.txt","w");
 
         if(!fp)
         {
                 printf ("Erro na abertura do arquivo.");
                 printf ("try again\n");
-                Alterar_nome (utilizador, n);
+                Alterar_password (n);
         }
 	if(!fp1)
         {
                 printf ("Erro na abertura do arquivo.");
                 printf ("try again\n");
-                Alterar_nome (utilizador, n);
+                Alterar_password (n);
         }
-	printf("Insira password atual.\n"); scanf("%s\n",temp1);
-	for(int i = 0; i < 30; i++)
+	printf("Insira password atual.\n"); scanf("%s",temp1);
+	if ( !(strcmp (utilizador[n].password, temp1) == 0))
 	{
-		if(utilizador[n].password[i] != temp1[i])
-		{
-			printf("Nome errado.Tente outra vez\n");
-			Alterar_nome(utilizador, n);
-		}
+		printf("Password errada.Tente outra vez\n");
+			Alterar_password(n);
 	}
+
 	printf("Tem tres tentativas.\n");
-	while(tentativas < 3 )
+	while(tentativas < 3 && p != 'b' )
 	{
-		printf("Insira password nova.\n"); scanf("%s\n",tempnome);
+		printf("Insira password nova.\n"); scanf("%s",tempnome);
 		if(strlen(tempnome) >= 20)
 		{
 			printf("Tenta outra vez.\n");
@@ -454,18 +454,19 @@ Alterar_password(conta utilizador[], int n)
 				++i;
 
 				if(strcmp (temp1, utilizador[n].username) == 0 && strcmp (temp2, utilizador[n].password) == 0)
-					fprintf(fp1, "%s;%s;%s;%s;%s;\n", temp1, temp2, tempnome, temp3, temp4, temp5);
+					fprintf(fp1, "%s;%s;%s;%s;%s;\n", temp1, tempnome, temp3, temp4, temp5);
 				else
-					fprintf(fp1, "%s;%s;%s;%s;%s\n", temp1,temp2, temp3, temp4, temp5);
+					fprintf(fp1, "%s;%s;%s;%s;%s;\n", temp1,temp2, temp3, temp4, temp5);
 		       }
+		       p = 'b';
 		 }
 	}
 	if(tentativas < 3)
 	{
 		fclose (fp); fclose (fp1);
 
-		FILE *fp3 = fopen("Dados_Login.txt","w");
-		FILE *fp4 = fopen("Dados_Login_temporario.txt","r");
+		FILE *fp3 = fopen("./SupCliente_assets/Dados_Login.txt","w");
+		FILE *fp4 = fopen("./SupCliente_assets/Dados_Login_temporario.txt","r");
 
 		while (fgets(s,300,fp4))
 		{
@@ -494,7 +495,7 @@ Alterar_password(conta utilizador[], int n)
 		       		temp4[l++] = s[i];
 			temp4[l++] = '\0';
 			++i;
-			fprintf(fp3, "%s;%s;%s;%s;\n", temp1,temp2, temp3, temp4, temp5);
+			fprintf(fp3, "%s;%s;%s;%s;%s;\n", temp1,temp2, temp3, temp4, temp5);
 		}
 		fclose (fp3); fclose (fp4);
 		menu_de_registo();
@@ -505,22 +506,24 @@ Alterar_password(conta utilizador[], int n)
 }
 
 void
-Subscrever_topicos(Topicos topico[],conta utilizador[],int n, int p)
+Subscrever_topicos(int p)
 {
 	char s[300];
 	char input;
-	FILE *fp = fopen("C:\\Users\\utilizador\\Desktop\\project_lab\\Topicos.txt","r");
+	FILE *fp = fopen("Topicos.txt","r");
 	if(!fp)
         {
                 printf ("Erro na abertura do arquivo.");
                 printf ("try again\n");
-                Subscrever_topicos(topico,utilizador,n,p);
+                Subscrever_topicos(0);
 	}
 
 	while (fgets(s,300,fp))
 	{
 		int i = 0;
-		topico[p].num_topico = s[i++];
+		for (; s[i] != ';'; ++i)
+			topico[p].num_topico[i] = s[i];
+		topico[p].num_topico[i]	= '\0';
 		i++;
 		int j = 0;
 
@@ -529,33 +532,178 @@ Subscrever_topicos(Topicos topico[],conta utilizador[],int n, int p)
 
 		topico[p].topico[j++] = '\0';
 		i++;
-		topico[p].likes = s[i];
+		int k = 0;
+		for (; s[i] != ';'; ++i)
+			topico[p].likes[k++] = s[i];
+		topico[p].likes[k++] = '\0';
 
-		printf("%d - %s. %d likes", topico[p].num_topico, topico[p].topico, topico[p].likes);
+		printf("%s - %s. %s likes\n", topico[p].num_topico, topico[p].topico, topico[p].likes);
 		printf("Deseja subscrever este tópico?(y/n) ou sair?(s)\n");
-		scanf("%d", &input);
+		scanf("%s", &input);
 		if(input == 'y')
 		{
-			adicionar_topico(topico[p].num_topico,utilizador,n,p);
+			adicionar_topico(0,0);
 
 		}
 		if(input == 's')
 		{
 			Menu();
+			return;
 
 		}
+		if(input == 'n')
+			continue;
 
 
 
 	}
 
-return;
+
 }
 
 void
-adicionar_topico(Topicos topico[], conta utilizador[], int n, int p)
+adicionar_topico(int n, int p)
 {
+	char valor_comparar[100];
+	FILE *fp = fopen("./SupCliente_assets/Dados_Login.txt","r");
+	FILE *fp1 = fopen("./SupCliente_assets/Dados_Login_temporario.txt","w");
+
+        if(!fp)
+        {
+                printf ("E1rro na abertura do arquivo.");
+                printf ("try again\n");
+                adicionar_topico(n,p);
+        }
+	if(!fp1)
+        {
+                printf ("E2rro na abertura do arquivo.");
+                printf ("try again\n");
+                adicionar_topico(n, p);
+        }
+	int j = 0;
+	int k = 0;
+	char temp1[30];
+        char temp2[30];
+	char temp3[30];
+	char temp4[100];
+	char temp5[300];
+	char s[300];
+	printf("Ola\n");
+	int i = 0;
+	if(utilizador[n].subscritos[0] != '\0')
+	{
+		while(utilizador[n].subscritos[i] != '\0')
+		{
+			k = 0;
+			for(; utilizador[n].subscritos[i] != ','; ++i)
+			{
+				valor_comparar[k++] = utilizador[n].subscritos[j];
+
+			}
+
+			valor_comparar[k++] = '\0';
+			++i;
+			printf("%s, %s\n",valor_comparar, topico[p].num_topico );
+
+			if((strcmp (valor_comparar, topico[p].num_topico ) == 0))
+			{
+				printf("Este topico já estava subscrito\n");
+				printf("Ola\n");
+				return;
+			}
+		}
+	}
+
+
+	while (fgets(s,300,fp) != NULL && s[0] != '\n')
+	{
+
+		int i = 0;
+		for (i = 0; s[i] != ';'; ++i)
+			temp1[i] = s[i];
+
+		temp1[i] = '\0';
+		++i;
+
+		int j = 0;
+		for (; s[i] != ';'; ++i)
+			temp2[j++] = s[i];
+		temp2[j++] = '\0';
+		++i;
+
+		int k = 0;
+		for (; s[i] != ';'; ++i)
+		       temp3[k++] = s[i];
+		temp3[k++] = '\0';
+		++i;
+
+		int l = 0;
+		for (; s[i] != ';'; ++i)
+		       temp4[l++] = s[i];
+		temp4[l++] = '\0';
+		++i;
+
+		int m = 0;
+		for (; s[i] != ';'; ++i)
+			temp5[m++] = s[i];
+		temp5[m++] = '\0';
+		++i;
+
+		if(strcmp (temp1, utilizador[n].username) == 0 && strcmp (temp2, utilizador[n].password) == 0)
+			fprintf(fp1, "%s;%s;%s;%s;%s,%s;\n", temp1, temp2, temp3, temp4,topico[p].num_topico, temp5);
+		else
+			fprintf(fp1, "%s;%s;%s;%s;%s;\n", temp1,temp2, temp3, temp4, temp5);
+	}
+
+
+
+{
+	fclose (fp); fclose (fp1);
+
+	FILE *fp3 = fopen("./SupCliente_assets/Dados_Login.txt","w");
+	FILE *fp4 = fopen("./SupCliente_assets/Dados_Login_temporario.txt","r");
+
+	while (fgets(s,300,fp4))
+	{
+
+		int i = 0;
+		for (i = 0; s[i] != ';'; ++i)
+			temp1[i] = s[i];
+
+		temp1[i] = '\0';
+		++i;
+
+		int j = 0;
+		for (; s[i] != ';'; ++i)
+			temp2[j++] = s[i];
+		temp2[j++] = '\0';
+		++i;
+
+		int k = 0;
+		for (; s[i] != ';'; ++i)
+			temp3[k++] = s[i];
+		temp3[k++] = '\0';
+		++i;
+
+		int l = 0;
+		for (; s[i] != ';'; ++i)
+			temp4[l++] = s[i];
+		temp4[l++] = '\0';
+		++i;
+
+		int m = 0;
+		for (; s[i] != ';'; ++i)
+			temp5[m++] = s[i];
+		temp5[m++] = '\0';
+		++i;
+
+		fprintf(fp3, "%s;%s;%s;%s;%s;\n", temp1,temp2, temp3, temp4, temp5);
+	}
+	fclose (fp3); fclose (fp4);
 	return;
+}
+
+
 }
 
 
@@ -564,6 +712,7 @@ void
 Menu()
 {
 	clear();
+
 	printf("**Menu**\n");
 	printf("1) Gerir conta\n");
         printf("2) Ver feed\n");
@@ -578,12 +727,17 @@ Menu()
         scanf("%d", &input);
         if(input == 1)
 			Gerir_conta(0);
-        /*switch (input)
+	if(input == 5)
+	{
+		Subscrever_topicos(0);
+		return;
+	}
+	/*switch (input)
         {
 		case 1:
 			Gerir_conta();
 			break;
-			
+
                 case 2:
                         Ver_feed();
                 case 3:
@@ -663,6 +817,8 @@ Login(int n)
         clear();
         char temp1[20];
         char temp2[20];
+	int q = 0;
+	int input = 0 ;
         char s[50];
 
         FILE *fp = fopen("./SupCliente_assets/Dados_Login.txt","r");
@@ -675,6 +831,7 @@ Login(int n)
         }
 
         printf("Insira o username \n"); scanf("%s",temp1);
+	clear();
         printf("Insira a password \n"); scanf("%s",temp2);
 
         while (fgets(s,500,fp) != NULL && s[0] != '\n')
@@ -684,7 +841,7 @@ Login(int n)
 		                        utilizador[n].username[i] = s[i];
 
 		                utilizador[n].username[i] = '\0';
-		                
+
 		                ++i;
 
 		                int j = 0;
@@ -710,58 +867,42 @@ Login(int n)
 							 utilizador[n].subscritos[m++] = s[i];
 						 utilizador[n].subscritos[m++] = '\0';
 
-                if ( !(strcmp (utilizador[n].username, temp1) == 0))
-                {	
-					char continuar = 0;
-					while(continuar != 'y' || continuar != 'n')
-								{	scanf("%c", &continuar);
-									printf("Nome ou password incorretos. Deseja tentar outra vez?(y/n) \n");
-									 
-									if(continuar == 'y')
-											Login(n);
-									if(continuar == 'n')
-                                        menu_de_registo();
-                                  } 
-                            
-				break;
+
+                if ( (strcmp (utilizador[n].username, temp1) == 0) && (strcmp (utilizador[n].password, temp2) == 0))
+		{
+			Menu();
+			return;
                 }
+	}
+	clear();
+	printf("Username ou password incorretos deseja tentar outra vez.\n");
+	printf("Presse 1(tentar outra vez) ou Press 2(voltar)\n");
+	while(input != 1 && input != 2)
+	{
 
-
-                if ( !(strcmp (utilizador[n].password, temp2) == 0) )
-	       	    {
-								char continuar = 0;
-								while(continuar != 'y' || continuar != 'n')
-								{	scanf("%c", &continuar);
-									printf("Nome ou password incorretos. Deseja tentar outra vez?(y/n) \n");
-									 
-									if(continuar == 'y')
-											Login(n);
-									if(continuar == 'n')
-                                        menu_de_registo();
-                                  }   
-				break;
-			    }
-			    else
-			    {
-					fclose(fp);
-					Menu();
-				}	
-		if(feof(fp))
-   			break;
-
-        }
-
-        
-
-        return ;
+        	scanf("%d", &input);
+		while(input != 1 && input != 2)
+		{
+			clear();
+			printf("Opção invalida.\nPresse 1(tentar outra vez) ou Press 2(voltar)\n");
+			scanf("%d", &input);
+		}
+		if(input == 1)
+			Login(0);
+		if(input == 2)
+			menu_de_registo();
+	}
+	return;
 }
+
+
 
 void
 main()
 {
  	clear();
 	int p = 0;
-        
+
 	Topicos topico[200];
         menu_de_registo();
 
