@@ -6,15 +6,15 @@
 #define FX "SupServidor_assets/info_util.txt"
 #define PR "Highway/Pedido_de_registo.txt"
 #define Hell "highway/banlist.txt"
+int var=195;
 typedef struct
 {
 	char username[30];
 	char password[30];
 	char email[100];
 	char nome[30];
-	int tipo;
+	char tipo;
 }user;
-int fechar=0;
 user database[1000];
 user banlist[1000];
 int compare(char a[], char b[])
@@ -27,27 +27,49 @@ int compare(char a[], char b[])
 }
 void database_init()
 {
-  FILE *fx; char s[1],n=0,i,j;
+	FILE *fx; 
+	char s[var];
+	int n=0;
+	int i;
+	int j=0;
 	fx=fopen(FX,"r");
-	while(fgets(s,300,fx)){
-		for(i=0;s[i]!=';';i++)
+	while(fgets(s,var,fx))
+	{
+		fgets(s,var,fx);
+		for(i=0;s[i]!=';';++i)
+		{
 			database[n].username[j]=s[i];
-		i++;
+			++j;
+		}
+		database[n].username[j]='\0';
+		++i;
 		j=0;
-		for(;s[i]!=';';i++)
+		for(;s[i]!=';';++i)
+		{
 			database[n].password[j]=s[i];
-		i++;
+			++j;
+		}
+		database[n].password[j]='\0';
+		++i;
 		j=0;
-		for(i=0;s[i]!=';';i++) 
+		for(i=0;s[i]!=';';++i) 
+		{
 			database[n].email[j]=s[i];
-		i++;
+			++j;
+		}
+		database[n].email[j]='\0';
+		++i;
 		j=0;
-		for(;s[i]!=';';i++) 
+		for(;s[i]!=';';++i) 
+		{
 			database[n].nome[j]=s[i];
-		i++;
+			++j;
+		}
+		database[n].nome[j]='\0';
+		++i;
 		j=0;
 		database[n].tipo=s[i];
-		n++;
+		++n;
 	}
 	fclose(fx);
 }
@@ -77,22 +99,36 @@ void banlist_init()
 {
   
   	FILE *fx; 
-	char s[300];
+	char s[var];
 	int n=0;
 	int i;
 	int j;
 	fx=fopen(Hell,"r");
-	while(fgets(s,300,fx)){
-		for(i=0;s[i]!=';';i++)
-			banlist[n].username[j++]=s[i];
+	while(fgets(s,var,fx)){
+		fgets(s,var,fx);
+		j=0;
+		for(i=0;s[i]!=';';++i)
+		{
+			banlist[n].username[j]=s[i];
+			++j;
+		}
+		banlist[n].username[j]='\0';
 		i++;
 		j=0;
-		for(i=0;s[i]!=';';i++) 
-			banlist[n].email[j++]=s[i];
+		for(i=0;s[i]!=';';++i) 
+		{
+			banlist[n].email[j]=s[i];
+			++j;
+		}
+		banlist[n].email[j]='\0';
 		i++;
 		j=0;
-		for(;s[i]!=';';i++) 
-			banlist[n].nome[j++]=s[i];
+		for(;s[i]!=';';++i)
+		{
+			banlist[n].nome[j]=s[i];
+			++j;
+		}
+		banlist[n].nome[j]='\0';
 		++n;
 	}	
 	fclose(fx);
@@ -120,18 +156,19 @@ void grava(int l, user u)
 
    }
 }
-char delet(user u)
+void delet(user u)
 {
 	int i;
 	FILE *fx;
 	fx=fopen(FX,"r+");
 	FILE *t;
 	t=fopen("tempfile.txt","w+");
-	char s[300];
-	char e[300];
+	char s[var];
+	char e[var];
 	int y=1;
-	for (;fgets(s,300,fx);)
+	for (;fgets(s,var,fx);)
 	{
+		fgets(s,var,fx);
 		for(i=0;s[i]!=';';i++)
 		{
 			if(compare(u.username, s)==-1)
@@ -149,9 +186,10 @@ char delet(user u)
 	fclose(fx);
 	FILE *p;
 	p=fopen(FX,"w");
-	for (;fgets(e,300,t);)
+	for (;fgets(e,var,t);)
 	{
-		fprintf(p,"%s/n",t);
+		fgets(e,var,t);
+		fprintf(p,"%s/n",e);
 	}
 	fclose(p);
 	fclose(t);
@@ -175,21 +213,21 @@ int isbanned(user u)
 	}
 	return -1;
 }
-int BanHammer()
+void BanHammer()
 { 
 	user m;
 	printf("Qual o utilizador a banir?\n Nome de utilizador:");
-	scanf("%c", &m.username);
+	scanf("%s",m.username);
 	printf("\n Email:");
-	scanf("%c", &m.email);
+	scanf("%s", m.email);
 	printf("\n Nome:");
-	scanf("%c", &m.nome);
+	scanf("%s", m.nome);
 	if(user_exists(m)==-1)
 	{
 		printf("\n O Utilizador não existe, quer tentar outra vez? (y/n)\n");
 		char yn;
-		scanf("%c", yn);
-		if(yn=='y')
+		scanf("%c", &yn);
+		if(yn=='gdy')
 			BanHammer();
 		else return;
 	if (isbanned(m)==-1)
@@ -202,7 +240,7 @@ int BanHammer()
 	{
 		printf("O utilizador já se encontra banido, quer tentar outra vez? (y/n)\n");
 		char yn;
-		scanf("%c", yn);
+		scanf("%c", &yn);
 		if(yn=='y')
 			BanHammer();
 		else return;
@@ -243,25 +281,26 @@ void menu()
 {	
 	menu_prompt();
 	int input;
-	scanf("%c", &input);
+	scanf("%d", &input);
 	switch (input)
 	{
 		case 1: userlist(); break;
-		case 2: fechar=1;break;
+		case 2: break;
 		default: menu(); break;
 	}
 	
 }
-int Login()
+void Login()
 {
         char username[30];
         char password[30];
-        FILE *fp;
         char x;
         int i;
-        fp = fopen(FX,"r");
-        printf("Insira o username \n"); scanf("%s", &username);
-        printf("Insira a password \n"); scanf("%s",&password);
+        int out=0;
+        printf("Insira o username \n"); 
+        scanf("%s", username);
+        printf("Insira a password \n"); 
+		scanf("%s",password);		
         for ( i=0; i < 100; ++i)
         {
         	if (compare(database[i].username, username))
@@ -271,7 +310,9 @@ int Login()
         			if(database[i].tipo==1)
         			{
         				printf("Dados aceites");
-        				Menu();
+        				menu();
+        				out=1;
+        				break;
         			}
         			else 
         			{
@@ -280,8 +321,8 @@ int Login()
         				if (x=='y')
         				{
         					x='n';
-                		Login();
-       				}
+							Login();
+						}
         				else {menu_de_registo ();}
         			}
         		}
@@ -297,23 +338,24 @@ int Login()
        		else {menu_de_registo();}
         		}        		
         	}
-	
-                
+		if(out==0)
+		{
+			printf("Utilizador não encontrado.");
+			printf("Quer tentar outra vez(y/n)?"); scanf("%c",&x);
+			if (x=='y')
+			{
+				x='n';
+				Login();
+			}
+			else {menu_de_registo();}
+        
                 
         }
-        printf("Utilizador não encontrado.");
-        printf("Quer tentar outra vez(y/n)?"); scanf("%c",&x);
-        if (x=='y')
-        {
-       		x='n';
-          	Login();
-      	}
-        else {menu_de_registo();}
-        
-
-
-
+        			
+	}
+	
 }
+
 int smain()
 {
   
@@ -326,22 +368,29 @@ int smain()
     case 0: return 0;
     default: printf("Erro no input, tente outra vez\n" ); smain();
   }
+  return 0;
 }	       
+
+    
+
+
+
 void freshmeat()
 {
-	 FILE *pr, *fx, *hl;
+	 FILE *pr;
+	 FILE *fx;
+	 FILE *hl;
 
-	 char s[300];
+	 char s[var];
 	 user(u);
 	 for(;;)
 	 {
 		pr=fopen(PR,"r");
 		fx=fopen(FX,"r+");
 		hl=fopen(Hell, "r+");
-		 if (fgets(s,200,pr)) {
-		 	for(;fgets(s,200,pr);)
+		 	for(;fgets(s,var,pr);)
 			{
-				fgets(s,200,pr);
+				fgets(s,var,pr);
 				char tempu[30];
 				char tempp[30];
 				char tempe[100];
@@ -366,23 +415,20 @@ void freshmeat()
 				}	
 				tempt=s[i];
 				u=new(tempu, tempp, tempe, tempn, tempt);
-				if ((isbanned(u)==-1) && (user_eists(u)==-1))
+				if ((isbanned(u)==-1) && (user_exists(u)==-1))
 					grava(1,u);				
 			}
-		 database_init();
-		 }		 
-		 if(fechar==1)
-		 {
+		 
+		 	
+			database_init();
 			fclose(pr);
 			fclose(fx);
 			fclose(hl);
-			return;
-		}
+			
+		
 		 sleep(60);
 	 }
-
-}
-    
+ }
 
 
 int main()
@@ -398,5 +444,6 @@ int main()
     default: printf("Erro no input, tente outra vez\n" ); smain();
   }
 }
+
 
 
