@@ -20,9 +20,19 @@ typedef struct
 	char num_topico[10];
 	char topico[150];
 	char likes[150];
+	
 }Topicos;
 
 Topicos topico[200];
+
+typedef struct
+{
+	char num_topico[10];
+	char coments[1000];
+}Posts;
+
+Posts comentarios[200];
+
 
 void clear();
 void menu_de_registo();
@@ -34,6 +44,7 @@ void Alterar_password();
 void Alterar_username();
 void Subscrever_topicos();
 void adicionar_topico();
+void Ver_topicos();
 
 
 
@@ -133,6 +144,7 @@ Alterar_nome(int n)
                 printf ("try again\n");
                 Alterar_nome (n);
         }
+    clear();    
 	printf("Insira nome atual.(vai voltar ao menu de registo no fim da alteração)\n"); scanf("%s",temp1);
 
 	if ( !(strcmp (utilizador[n].nome, temp1) == 0))
@@ -140,7 +152,8 @@ Alterar_nome(int n)
 			printf("Nome errado.Tente outra vez\n");
 			Alterar_nome(n);
 		}
-
+	clear();
+	printf("Tem tres tentativa.\n");
 	while(tentativas < 3 && p != 'b' )
 	{
 		printf("Insira nome novo.\n"); scanf("%s",tempnome);
@@ -238,6 +251,7 @@ Alterar_nome(int n)
 	 		}
 	 		fclose (fp3); fclose (fp4);
 	 		menu_de_registo();
+	 		return;
 	 	}
 
 	 	else
@@ -507,9 +521,10 @@ Alterar_password(int n)
 
 void
 Subscrever_topicos(int p)
-{
+{	
+  clear();
 	char s[300];
-	char input;
+	int input;
 	FILE *fp = fopen("Topicos.txt","r");
 	if(!fp)
         {
@@ -518,8 +533,9 @@ Subscrever_topicos(int p)
                 Subscrever_topicos(0);
 	}
 
-	while (fgets(s,300,fp))
-	{
+	while (fgets(s,300,fp) != NULL && s[0] != '\n')
+	{	
+		clear();
 		int i = 0;
 		for (; s[i] != ';'; ++i)
 			topico[p].num_topico[i] = s[i];
@@ -537,32 +553,31 @@ Subscrever_topicos(int p)
 			topico[p].likes[k++] = s[i];
 		topico[p].likes[k++] = '\0';
 
-		printf("%s - %s. %s likes\n", topico[p].num_topico, topico[p].topico, topico[p].likes);
-		printf("Deseja subscrever este tópico?(y/n) ou sair?(s)\n");
-		scanf("%s", &input);
-		if(input == 'y')
+		printf("%s) %s. %s likes\n", topico[p].num_topico, topico[p].topico, topico[p].likes);
+		printf("Deseja subscrever este tópico?Press 1(sim), Press 2(nao), Press 3(voltar)\n");
+		scanf("%d", &input);
+		if(input == 1)
 		{
 			adicionar_topico(0,0);
 
 		}
-		if(input == 's')
+		if(input == 3)
 		{
 			Menu();
 			return;
 
 		}
-		if(input == 'n')
-			continue;
-
-
+		
 
 	}
+	Menu();
+	return;
 
 
 }
 
 void
-adicionar_topico(int n, int p)
+adicionar_topico(int n,int p)
 {
 	char valor_comparar[100];
 	FILE *fp = fopen("./SupCliente_assets/Dados_Login.txt","r");
@@ -597,14 +612,13 @@ adicionar_topico(int n, int p)
 			k = 0;
 			for(; utilizador[n].subscritos[i] != ','; ++i)
 			{
-				valor_comparar[k++] = utilizador[n].subscritos[j];
+				valor_comparar[k++] = utilizador[n].subscritos[i];
 
 			}
 
 			valor_comparar[k++] = '\0';
 			++i;
-			printf("%s, %s\n",valor_comparar, topico[p].num_topico );
-
+			
 			if((strcmp (valor_comparar, topico[p].num_topico ) == 0))
 			{
 				printf("Este topico já estava subscrito\n");
@@ -612,7 +626,7 @@ adicionar_topico(int n, int p)
 				return;
 			}
 		}
-	}
+	
 
 
 	while (fgets(s,300,fp) != NULL && s[0] != '\n')
@@ -648,12 +662,16 @@ adicionar_topico(int n, int p)
 			temp5[m++] = s[i];
 		temp5[m++] = '\0';
 		++i;
-
+		
+		
 		if(strcmp (temp1, utilizador[n].username) == 0 && strcmp (temp2, utilizador[n].password) == 0)
 			fprintf(fp1, "%s;%s;%s;%s;%s,%s;\n", temp1, temp2, temp3, temp4,topico[p].num_topico, temp5);
 		else
 			fprintf(fp1, "%s;%s;%s;%s;%s;\n", temp1,temp2, temp3, temp4, temp5);
 	}
+	}
+	
+	else
 
 
 
@@ -706,7 +724,146 @@ adicionar_topico(int n, int p)
 
 }
 
+void
+Ver_topicos(int p)
+{
+	clear();
+	char s[300];
+	int input;
+	char a[10];
+	int input2;
+	FILE *fp = fopen("Topicos.txt","r");
+	if(!fp)
+        {
+                printf ("Erro na abertura do arquivo.");
+                printf ("try again\n");
+                Ver_topicos(0);
+	}
 
+	while (fgets(s,300,fp) != NULL && s[0] != '\n')
+	{	
+		
+		int i = 0;
+		for (; s[i] != ';'; ++i)
+			topico[p].num_topico[i] = s[i];
+		topico[p].num_topico[i]	= '\0';
+		
+		i++;
+		int j = 0;
+
+                for (; s[i] != ';'; ++i)
+			topico[p].topico[j++] = s[i];
+
+		topico[p].topico[j++] = '\0';
+		i++;
+		int k = 0;
+		for (; s[i] != ';'; ++i)
+			topico[p].likes[k++] = s[i];
+		topico[p].likes[k++] = '\0';
+
+		printf("%s) %s. %s likes\n", topico[p].num_topico, topico[p].topico, topico[p].likes);
+	}
+	fclose(fp);
+	FILE *fp1 = fopen("Topicos.txt","r");
+	if(!fp)
+    {
+                printf ("Erro na abertura do arquivo.");
+                printf ("try again\n");
+                Ver_topicos(0);
+	}
+	printf("Escolha o numero do topico do qual quer ver as mensagens\n");
+		scanf("%d", &input);
+	while (fgets(s,300,fp1) != NULL && s[0] != '\n')
+	{	
+		int i = 0;
+		for (; s[i] != ';'; ++i)
+			topico[p].num_topico[i] = s[i];
+		topico[p].num_topico[i]	= '\0';
+		i++;
+		int j = 0;
+
+                for (; s[i] != ';'; ++i)
+			topico[p].topico[j++] = s[i];
+
+		topico[p].topico[j++] = '\0';
+		i++;
+		int k = 0;
+		for (; s[i] != ';'; ++i)
+			topico[p].likes[k++] = s[i];
+		topico[p].likes[k++] = '\0';
+		if(atoi(topico[p].num_topico) == input )
+		{	
+			clear();
+			printf("%s) %s. %s likes\n", topico[p].num_topico, topico[p].topico, topico[p].likes);
+			//Ver_coments();
+			return;
+		}
+	}
+	fclose(fp1);
+	
+	printf("Esse tópico não existe.Press 1 (para tentar outra vez) Press2(para voltar)");
+	printf("Presse 1(tentar outra vez) ou Press 2(voltar)\n");
+		
+	while(input2 != 1 && input2 != 2)
+	{
+
+        scanf("%d", &input2);
+		while(input2 != 1 && input2 != 2)
+		{
+			clear();
+			printf("Opção invalida.\nPresse 1(tentar outra vez) ou Press 2(voltar)\n");
+			scanf("%d", &input);
+		}
+		if(input2 == 1)
+				Ver_topicos(0);
+		if(input2 == 2)
+			Menu();
+	}
+	
+	return;
+
+
+}
+
+Ver_coments()
+{
+	clear();
+	char s[300];
+	int input;
+	char a[10];
+	int input2;
+	FILE *fp = fopen("Topicos.txt","r");
+	if(!fp)
+        {
+                printf ("Erro na abertura do arquivo.");
+                printf ("try again\n");
+                Ver_topicos(0);
+	}
+
+	while (fgets(s,300,fp) != NULL && s[0] != '\n')
+	{	
+		
+		int i = 0;
+		for (; s[i] != ';'; ++i)
+			topico[p].num_topico[i] = s[i];
+		topico[p].num_topico[i]	= '\0';
+		
+		i++;
+		int j = 0;
+
+                for (; s[i] != ';'; ++i)
+			topico[p].topico[j++] = s[i];
+
+		topico[p].topico[j++] = '\0';
+		i++;
+		int k = 0;
+		for (; s[i] != ';'; ++i)
+			topico[p].likes[k++] = s[i];
+		topico[p].likes[k++] = '\0';
+
+		printf("%s) %s. %s likes\n", topico[p].num_topico, topico[p].topico, topico[p].likes);
+	}
+	fclose(fp);
 
 void
 Menu()
@@ -732,6 +889,11 @@ Menu()
 		Subscrever_topicos(0);
 		return;
 	}
+	
+	if(input == 3)
+	{
+		Ver_topicos(0);
+	}	
 	/*switch (input)
         {
 		case 1:
@@ -771,9 +933,13 @@ Pedido_de_registo()
         char newemail[100];
         char continuar = 2;
         printf("Insira um nome (menos de vinte caracteres)\n"); scanf("%s", newname);
+    clear();
         printf("Insira uma username.Este vai ser usado no login. (menos de vinte caracteres)\n"); scanf("%s", newusername);
+    clear();
         printf("Insira uma password (menos de vinte caracteres)\n"); scanf("%s", newpasswd);
+    clear();
         printf("Insira uma email \n"); scanf("%s", newemail);
+    clear();
 
 	if(strlen(newname) >= 20)
 	{
