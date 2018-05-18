@@ -45,6 +45,9 @@ void Alterar_username();
 void Subscrever_topicos();
 void adicionar_topico();
 void Ver_topicos();
+void Ver_coments();
+void Ver_feed();
+void Dar_like();
 
 
 
@@ -90,7 +93,7 @@ void
 Gerir_conta(int n)
 {
 	clear();
-	printf("**Bem vindo**\n");
+	printf("**Gerir conta**\n");
 	printf("1) Alterar nome.\n");
 	printf("2) Alterar username.\n");
 	printf("3) Alterar password.\n");
@@ -256,6 +259,7 @@ Alterar_nome(int n)
 
 	 	else
 	 		Gerir_conta(0);
+	 		return;
 
 }
 void
@@ -383,6 +387,7 @@ Alterar_username(int n)
 		}
 		fclose (fp3); fclose (fp4);
 		menu_de_registo();
+		return;
 	}
 	else
 		Gerir_conta(0);
@@ -513,6 +518,7 @@ Alterar_password(int n)
 		}
 		fclose (fp3); fclose (fp4);
 		menu_de_registo();
+		return;
 	}
 	else
 		Gerir_conta(0);
@@ -607,7 +613,7 @@ adicionar_topico(int n,int p)
 	int i = 0;
 	if(utilizador[n].subscritos[0] != '\0')
 	{
-		while(utilizador[n].subscritos[i] != '\0')
+		for(;utilizador[n].subscritos[i] != '\0'; ++i)
 		{
 			k = 0;
 			for(; utilizador[n].subscritos[i] != ','; ++i)
@@ -617,7 +623,7 @@ adicionar_topico(int n,int p)
 			}
 
 			valor_comparar[k++] = '\0';
-			++i;
+			
 			
 			if((strcmp (valor_comparar, topico[p].num_topico ) == 0))
 			{
@@ -626,7 +632,7 @@ adicionar_topico(int n,int p)
 				return;
 			}
 		}
-	
+	}
 
 
 	while (fgets(s,300,fp) != NULL && s[0] != '\n')
@@ -669,13 +675,8 @@ adicionar_topico(int n,int p)
 		else
 			fprintf(fp1, "%s;%s;%s;%s;%s;\n", temp1,temp2, temp3, temp4, temp5);
 	}
-	}
 	
-	else
-
-
-
-{
+	
 	fclose (fp); fclose (fp1);
 
 	FILE *fp3 = fopen("./SupCliente_assets/Dados_Login.txt","w");
@@ -722,7 +723,7 @@ adicionar_topico(int n,int p)
 }
 
 
-}
+
 
 void
 Ver_topicos(int p)
@@ -795,12 +796,12 @@ Ver_topicos(int p)
 		{	
 			clear();
 			printf("%s) %s. %s likes\n", topico[p].num_topico, topico[p].topico, topico[p].likes);
-			//Ver_coments();
+			Ver_coments(0, 0);
 			return;
 		}
 	}
 	fclose(fp1);
-	
+   clear();
 	printf("Esse tópico não existe.Press 1 (para tentar outra vez) Press2(para voltar)");
 	printf("Presse 1(tentar outra vez) ou Press 2(voltar)\n");
 		
@@ -824,12 +825,74 @@ Ver_topicos(int p)
 
 
 }
-
-Ver_coments()
+void
+Ver_coments(int o, int p)
 {
-	clear();
+	
 	char s[300];
 	int input;
+	char a[10];
+	int input2;
+	FILE *fp = fopen("Posts.txt","r");
+	if(!fp)
+        {
+                printf ("Erro na abertura do arquivo.");
+                printf ("try again\n");
+                Ver_topicos(0);
+	}
+
+	while (fgets(s,300,fp) != NULL && s[0] != '\n')
+	{	
+		
+		int i = 0;
+		for (; s[i] != ';'; ++i)
+			comentarios[o].num_topico[i] = s[i];
+		comentarios[0].num_topico[i]	= '\0';
+		
+		i++;
+		if((strcmp (comentarios[o].num_topico, topico[p].num_topico) == 0))
+		{
+			for (; s[i] != ';'; ++i)
+			{
+				int j = 0;
+				for(;s[i] != ','; ++i)
+				{
+					comentarios[o].coments[j++] = s[i];
+				}
+				comentarios[o].coments[j++] = '\0';
+				printf("||%s.\n",comentarios[o].coments);
+			}	
+		 }
+	 }
+	fclose(fp);
+	
+	printf("Press 1(para voltar) ou press2(para voltar ao menu)");
+	while(input2 != 1 && input2 != 2)
+	{
+
+        scanf("%d", &input2);
+		while(input2 != 1 && input2 != 2)
+		{
+			clear();
+			printf("Opção invalida.\nPresse 1(tentar outra vez) ou Press 2(voltar)\n");
+			scanf("%d", &input);
+		}
+		if(input2 == 1)
+				Ver_topicos(0);
+		if(input2 == 2)
+			Menu();
+	}
+	return;
+}	
+
+void
+Ver_feed(int n, int p)
+{
+	clear();
+	char valor_comparar[100];
+	char s[300];
+	int input;
+	int z = 0;
 	char a[10];
 	int input2;
 	FILE *fp = fopen("Topicos.txt","r");
@@ -860,10 +923,147 @@ Ver_coments()
 		for (; s[i] != ';'; ++i)
 			topico[p].likes[k++] = s[i];
 		topico[p].likes[k++] = '\0';
+				
+		int l = 0;
+		
+		if(utilizador[n].subscritos[0] != '\0')
+		{
+			for(;utilizador[n].subscritos[l] != '\0'; ++l)
+			{
+				int k = 0;
+				for(; utilizador[n].subscritos[l] != ','; ++l)
+				{
+					valor_comparar[k++] = utilizador[n].subscritos[l];
 
-		printf("%s) %s. %s likes\n", topico[p].num_topico, topico[p].topico, topico[p].likes);
-	}
-	fclose(fp);
+				}
+
+				valor_comparar[k++] = '\0';
+			
+			
+				if((strcmp (valor_comparar, topico[p].num_topico ) == 0))
+				{
+					printf("%s) %s. %s likes\n", topico[p].num_topico, topico[p].topico, topico[p].likes);
+					
+				}
+				z++;
+			}	
+		}
+	}	
+		fclose(fp);
+		printf("Escolha o numero do topico para dar like ou se quiser voltar (press 0) ");
+		scanf("%d", &input2);
+		while(input2 > z && input2 != 2)
+		{
+			clear();
+			printf("Opção invalida.\nPresse 1(dar like) ou Press 2(voltar)\n");
+			scanf("%d", &input);
+		}
+		if(input2 < z)
+			Dar_like(input2);
+		if(input2 == 2)
+			Menu();
+		
+	return;
+
+}
+
+void
+Dar_like(int numerotop)
+{
+	int tentativas = 0;
+	int copia;
+	char tempnome[30];
+	char temp1[30];
+        char temp2[30];
+	char temp3[30];
+	char temp4[100];
+	char temp5[300];
+	char s[300];
+	char p = 'a';
+	copia = numerotop;
+	FILE *fp = fopen("Topicos.txt","r");
+	FILE *fp1 = fopen("Topicos_temporarios.txt","w");
+
+        if(!fp)
+        {
+                printf ("Erro na abertura do arquivo.");
+                printf ("try again\n");
+                Dar like(copia);
+        }
+	if(!fp1)
+        {
+                printf ("Erro na abertura do arquivo.");
+                printf ("try again\n");
+                Dar like(copia);
+        }
+	while (fgets(s,300,fp))
+	    {
+			int i = 0;
+		    for (i = 0; s[i] != ';'; ++i)
+            temp1[i] = s[i];
+            temp1[i] = '\0';
+            ++i;
+            int j = 0;
+            for (; s[i] != ';'; ++i)
+                    temp2[j++] = s[i];
+            temp2[j++] = '\0';
+			++i;
+			int k = 0;
+	       	for (; s[i] != ';'; ++i)
+		       temp3[k++] = s[i];
+	       	temp3[k++] = '\0';
+	       	++i;
+	       	
+		if(strcmp (atoi(temp1), numerotop) == 0 )
+			fprintf(fp1, "%s;%s;%d;\n", temp1, temp2, atoi(temp3)+1);
+		else
+			fprintf(fp1, "%s;%s;%s;\n", temp1,temp2, temp3, temp4, temp5);
+        }
+		      
+	
+	
+	
+		fclose (fp); fclose (fp1);
+
+		FILE *fp3 = fopen("./SupCliente_assets/Dados_Login.txt","w");
+		FILE *fp4 = fopen("./SupCliente_assets/Dados_Login_temporario.txt","r");
+
+		while (fgets(s,300,fp4))
+		{
+
+			int i = 0;
+			for (i = 0; s[i] != ';'; ++i)
+				temp1[i] = s[i];
+
+			temp1[i] = '\0';
+			++i;
+
+			int j = 0;
+			for (; s[i] != ';'; ++i)
+				temp2[j++] = s[i];
+			temp2[j++] = '\0';
+			++i;
+
+			int k = 0;
+			for (; s[i] != ';'; ++i)
+		       		temp3[k++] = s[i];
+			temp3[k++] = '\0';
+			++i;
+
+			int l = 0;
+			for (; s[i] != ';'; ++i)
+		       		temp4[l++] = s[i];
+			temp4[l++] = '\0';
+			++i;
+			fprintf(fp3, "%s;%s;%s;\n", temp1,temp2, temp3);
+		}
+		fclose (fp3); fclose (fp4);
+		menu_de_registo();
+		return;
+	
+}	
+	
+
 
 void
 Menu()
@@ -894,6 +1094,11 @@ Menu()
 	{
 		Ver_topicos(0);
 	}	
+	
+	if(input == 2)
+	{
+		Ver_feed(0,0);
+	}
 	/*switch (input)
         {
 		case 1:
