@@ -7,7 +7,7 @@
 #define PR "./Pedido_de_registo.txt"
 #define HELL "./banlist.txt"
 #define AD "./SupServidor_assets/admins.txt"
-int var=194;
+
 typedef struct 
 {
 	char username[30];
@@ -69,14 +69,14 @@ int compare(char a[], char b[])
 void database_init()
 {
 	FILE *fx; 
-	char s[var];
+	char s[194];
 	int n=0;
 	int i;
 	int j=0;
 	fx=fopen(FX,"r");
-	while(fgets(s,var,fx))
+	while(fgets(s,194,fx))
 	{
-		fgets(s,var,fx);
+		fgets(s,194,fx);
 		for(i=0;s[i]!=';';++i)
 		{
 			database[n].username[j]=s[i];
@@ -138,13 +138,13 @@ void banlist_init()
 {
   
   	FILE *fx; 
-	char s[var];
+	char s[162];
 	int n=0;
 	int i;
 	int j;
 	fx=fopen(HELL,"r");
-	while(fgets(s,var,fx)){
-		fgets(s,var,fx);
+	while(fgets(s,162,fx)){
+		fgets(s,162,fx);
 		j=0;
 		for(i=0;s[i]!=';';++i)
 		{
@@ -184,9 +184,9 @@ void delet(user u)
 	char s[var];
 	char e[var];
 	int y=1;
-	for (;fgets(s,var,fx);)
+	for (;fgets(s,194,fx);)
 	{
-		fgets(s,var,fx);
+		fgets(s,194,fx);
 		for(i=0;s[i]!=';';i++)
 		{
 			if(compare(u.username, s)==-1)
@@ -204,9 +204,9 @@ void delet(user u)
 	fclose(fx);
 	FILE *p;
 	p=fopen(FX,"w");
-	for (;fgets(e,var,t);)
+	for (;fgets(e,194,t);)
 	{
-		fgets(e,var,t);
+		fgets(e,194,t);
 		fprintf(p,"%s/n",e);
 	}
 	fclose(p);
@@ -256,12 +256,12 @@ int isbanned(user u)
 void freshmeat()
 {
 	 FILE *pr;		
-	 char s[var];
+	 char s[194];
 	 user(u);
 	 pr=fopen(PR,"r");
-	 for(;fgets(s,var,pr);)
+	 for(;fgets(s,194,pr);)
 		{
-			fgets(s,var,pr);
+			fgets(s,194,pr);
 			char tempu[30];
 			char tempp[30];
 			char tempe[100];
